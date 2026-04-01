@@ -1,16 +1,12 @@
-from datetime import datetime
 from logging import Logger
 
 
 class DdsMessageProcessor:
-    def __init__(self,
-                 logger: Logger) -> None:
-
+    def __init__(self, logger: Logger, repository, consumer, producer) -> None:
         self._logger = logger
-
-        self._batch_size = 30
+        self._repository = repository
+        self._consumer = consumer
+        self._producer = producer
 
     def run(self) -> None:
-        self._logger.info(f"{datetime.utcnow()}: START")
-
-        self._logger.info(f"{datetime.utcnow()}: FINISH")
+        self._logger.info('DDS message processor started')

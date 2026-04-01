@@ -51,6 +51,23 @@ class KafkaConsumer:
         self.c.commit(asynchronous=False)
 
     def close(self) -> None:
+        self.c.close()        self.c = Consumer(params)
+        self.c.subscribe([topic])
+
+    def consume(self, timeout: float = 3.0) -> Optional[Dict]:
+        msg = self.c.poll(timeout=timeout)
+        if not msg:
+            return None
+        if msg.error():
+            raise Exception(msg.error())
+
+        val = msg.value().decode('utf-8')
+        return json.loads(val)
+
+    def commit(self) -> None:
+        self.c.commit(asynchronous=False)
+
+    def close(self) -> None:
         self.c.close()                 topic: str,
                  group: str,
                  cert_path: str

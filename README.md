@@ -19,3 +19,5 @@
 - **Docker** — для контейнеризации сервисов;
 - **Kubernetes** — для деплоя сервисов;
 - **Yandex Cloud Container Registry** — для хранения Docker-образов.
+
+docker compose up --build

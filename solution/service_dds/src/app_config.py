@@ -8,15 +8,16 @@ class AppConfig:
     CERTIFICATE_PATH = '/crt/YandexInternalRootCA.crt'
 
     def __init__(self) -> None:
-
         self.kafka_host = str(os.getenv('KAFKA_HOST'))
         self.kafka_port = int(str(os.getenv('KAFKA_PORT')))
+
         self.kafka_consumer_username = str(os.getenv('KAFKA_CONSUMER_USERNAME'))
         self.kafka_consumer_password = str(os.getenv('KAFKA_CONSUMER_PASSWORD'))
         self.kafka_consumer_group = str(os.getenv('KAFKA_CONSUMER_GROUP'))
         self.kafka_consumer_topic = str(os.getenv('KAFKA_SOURCE_TOPIC'))
-        self.kafka_producer_username = str(os.getenv('KAFKA_CONSUMER_USERNAME'))
-        self.kafka_producer_password = str(os.getenv('KAFKA_CONSUMER_PASSWORD'))
+
+        self.kafka_producer_username = str(os.getenv('KAFKA_PRODUCER_USERNAME'))
+        self.kafka_producer_password = str(os.getenv('KAFKA_PRODUCER_PASSWORD'))
         self.kafka_producer_topic = str(os.getenv('KAFKA_DESTINATION_TOPIC'))
 
         self.pg_warehouse_host = str(os.getenv('PG_WAREHOUSE_HOST'))

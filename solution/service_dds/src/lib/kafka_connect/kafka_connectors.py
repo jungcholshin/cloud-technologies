@@ -5,7 +5,7 @@ from confluent_kafka import Consumer, Producer
 
 
 def error_callback(err):
-    print('Something went wrong: {}'.format(err))
+    print(f'Something went wrong: {err}')
 
 
 class KafkaProducer:
@@ -27,17 +27,21 @@ class KafkaProducer:
         self.p.produce(self.topic, json.dumps(payload))
         self.p.flush(10)
 
+    def close(self) -> None:
+        self.p.flush(10)
+
 
 class KafkaConsumer:
-    def __init__(self,
-                 host: str,
-                 port: int,
-                 user: str,
-                 password: str,
-                 topic: str,
-                 group: str,
-                 cert_path: str
-                 ) -> None:
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        user: str,
+        password: str,
+        topic: str,
+        group: str,
+        cert_path: str
+    ) -> None:
         params = {
             'bootstrap.servers': f'{host}:{port}',
             'security.protocol': 'SASL_SSL',
@@ -45,12 +49,11 @@ class KafkaConsumer:
             'sasl.mechanism': 'SCRAM-SHA-512',
             'sasl.username': user,
             'sasl.password': password,
-            'group.id': group,  # '',
+            'group.id': group,
             'auto.offset.reset': 'earliest',
             'enable.auto.commit': False,
             'error_cb': error_callback,
-            'debug': 'all',
-            'client.id': 'someclientkey'
+            'client.id': 'dds-service-client',
         }
 
         self.topic = topic
@@ -63,5 +66,12 @@ class KafkaConsumer:
             return None
         if msg.error():
             raise Exception(msg.error())
-        val = msg.value().decode()
+
+        val = msg.value().decode('utf-8')
         return json.loads(val)
+
+    def commit(self) -> None:
+        self.c.commit(asynchronous=False)
+
+    def close(self) -> None:
+        self.c.close()

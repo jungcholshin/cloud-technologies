@@ -1,19 +1,11 @@
-from datetime import datetime
 from logging import Logger
-from uuid import UUID
-
-from lib.kafka_connect import KafkaConsumer
 
 
 class CdmMessageProcessor:
-    def __init__(self,
-                 logger: Logger,
-                 ) -> None:
-
+    def __init__(self, logger: Logger, repository, consumer) -> None:
         self._logger = logger
-        self._batch_size = 100
+        self._repository = repository
+        self._consumer = consumer
 
     def run(self) -> None:
-        self._logger.info(f"{datetime.utcnow()}: START")
-
-        self._logger.info(f"{datetime.utcnow()}: FINISH")
+        self._logger.info('CDM message processor started')
